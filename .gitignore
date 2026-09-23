@@ -1,6 +1,8 @@
 # Gradle / Android
 .gradle/
-build/
+# Anchored: an unanchored build/ would also hide source packages such as feature/build/
+/build/
+/*/build/
 local.properties
 *.iml
 .idea/
