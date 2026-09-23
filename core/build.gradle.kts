@@ -46,10 +46,10 @@ tasks.named("processResources") { dependsOn(generateTemplateIndex) }
 tasks.test {
     // The APK builder tests need the real player template APK.
     dependsOn(":player-template:assembleRelease")
-    systemProperty(
-        "foldforge.playerTemplateApk",
-        rootProject.file("player-template/build/outputs/apk/release/player-template-release-unsigned.apk").absolutePath,
-    )
+    val playerTemplateApk = rootProject.file("player-template/build/outputs/apk/release/player-template-release-unsigned.apk")
+    // Declared as an input so a changed template re-runs the tests instead of reusing stale results.
+    inputs.file(playerTemplateApk).withPropertyName("playerTemplateApk")
+    systemProperty("foldforge.playerTemplateApk", playerTemplateApk.absolutePath)
     systemProperty("foldforge.buildTools", (System.getenv("ANDROID_HOME") ?: "/opt/android-sdk") + "/build-tools")
     // Optional: -PexportDir=... / -PapkOut=... copy test outputs out for external build verification.
     providers.gradleProperty("exportDir").orNull?.let { systemProperty("foldforge.exportDir", it) }
