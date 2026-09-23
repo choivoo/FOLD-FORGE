@@ -42,7 +42,6 @@ import androidx.compose.material.icons.filled.VerticalSplit
 import androidx.compose.material.icons.filled.ViewSidebar
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -200,7 +199,7 @@ fun WorkspaceScreen(projectId: String, onHome: () -> Unit, openSettings: () -> U
             },
     ) {
         when (val state = vm.load) {
-            WorkspaceLoad.Loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
+            WorkspaceLoad.Loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text("Opening project…", color = Forge.colors.muted) }
             is WorkspaceLoad.Failed -> EmptyState(Icons.Filled.FolderOpen, "Could not open project", state.message, actionLabel = "Back to Home", onAction = onHome)
             is WorkspaceLoad.Ready -> Column(Modifier.fillMaxSize()) {
                 StatusBar(vm, ::leave)

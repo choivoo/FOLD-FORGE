@@ -43,7 +43,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.foldforge.studio.FoldForgeApp
 import com.foldforge.studio.core.ui.theme.Forge
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private data class Page(val title: String, val body: String, val icon: ImageVector)
 
@@ -68,7 +70,7 @@ fun OnboardingScreen(onDone: (String?) -> Unit) {
         scope.launch {
             container.settings.update { it.copy(onboardingDone = true) }
             val demo = if (createDemo) runCatching { container.projects.create("Forge Runner", "forge-runner").id }.getOrNull() else null
-            onDone(demo)
+            withContext(Dispatchers.Main) { onDone(demo) }
         }
     }
 

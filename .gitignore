@@ -14,3 +14,8 @@ captures/
 *.jks
 # OS
 .DS_Store
+
+# Release binaries are published as CI artifacts, not committed
+release/*.apk
+tools/webqa/node_modules/
+tools/webqa/last-run.txt

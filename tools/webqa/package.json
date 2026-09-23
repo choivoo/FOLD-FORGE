@@ -1,0 +1,8 @@
+{
+  "name": "foldforge-web-qa",
+  "private": true,
+  "type": "module",
+  "description": "Runs every FOLD FORGE game template in headless Chromium with the injected QA runtime and executes the QA scenario engine.",
+  "scripts": { "test": "node run-web-qa.mjs" },
+  "dependencies": { "playwright-core": "1.55.0" }
+}

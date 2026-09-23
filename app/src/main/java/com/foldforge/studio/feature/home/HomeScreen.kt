@@ -48,7 +48,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -135,7 +134,7 @@ fun HomeScreen(openProject: (String) -> Unit, openSettings: () -> Unit, incoming
             }
             vm.busy?.let { label ->
                 item(span = { GridItemSpan(maxLineSpan) }) {
-                    Column { Text("$label…", color = Forge.colors.muted, fontSize = 12.sp); LinearProgressIndicator(Modifier.fillMaxWidth()) }
+                    Text("$label…", color = Forge.colors.accent, fontSize = 13.sp, fontWeight = FontWeight.Bold)
                 }
             }
             vm.error?.let { err ->

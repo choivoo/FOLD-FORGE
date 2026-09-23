@@ -54,6 +54,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.foldforge.studio.core.ai.AgentStage
 import com.foldforge.studio.core.ai.ContextScope
 import com.foldforge.studio.core.ui.components.EmptyState
@@ -68,13 +69,14 @@ import com.foldforge.studio.feature.workspace.WorkspaceViewModel
 @Composable
 fun AiPanel(vm: WorkspaceViewModel, openSettings: () -> Unit, modifier: Modifier = Modifier) {
     val ai = vm.ai
+    val settings by vm.settings.collectAsStateWithLifecycle()
     val clipboard = LocalClipboardManager.current
     var input by remember { mutableStateOf("") }
     val listState = rememberLazyListState()
     LaunchedEffect(ai.messages.size) { if (ai.messages.isNotEmpty()) listState.animateScrollToItem(ai.messages.size - 1) }
 
     Column(modifier.fillMaxSize().background(Forge.colors.panel)) {
-        PanelHeader("AI", subtitle = if (ai.isConfigured) vm.settings.value.aiModel else null) {
+        PanelHeader("AI", subtitle = if (ai.isConfigured) settings.aiModel else null) {
             ai.stage?.let { StatusChip(it.label, stageColor(it)) }
             ToolIcon(Icons.Filled.DeleteSweep, "Clear AI history", ai::clearHistory)
         }
@@ -138,7 +140,7 @@ fun AiPanel(vm: WorkspaceViewModel, openSettings: () -> Unit, modifier: Modifier
         AlertDialog(
             onDismissRequest = { ai.largeRequestWarning = null },
             title = { Text("Send the whole project?") },
-            text = { Text("About ${chars / 1000}k characters of project files would be sent to ${vm.settings.value.aiProvider.label}. Sensitive files (.env, keystores, local.properties) are always excluded and detected secrets are redacted.") },
+            text = { Text("About ${chars / 1000}k characters of project files would be sent to ${settings.aiProvider.label}. Sensitive files (.env, keystores, local.properties) are always excluded and detected secrets are redacted.") },
             confirmButton = { Button(onClick = { ai.largeRequestWarning = null; proceed() }) { Text("Send") } },
             dismissButton = { TextButton(onClick = { ai.largeRequestWarning = null }) { Text("Cancel") } },
         )

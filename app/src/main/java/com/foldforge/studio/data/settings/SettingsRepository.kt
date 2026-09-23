@@ -8,7 +8,11 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.preferencesDataStoreFile
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import com.foldforge.studio.core.ai.AiConfig
 import com.foldforge.studio.core.ai.ProviderKind
 import kotlinx.coroutines.flow.Flow
@@ -74,9 +78,13 @@ data class AppSettings(
     }
 }
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("foldforge_settings")
+/** One instance per Application (see AppContainer). */
+class SettingsRepository(context: Context) {
+    private val dataStore: DataStore<Preferences> = PreferenceDataStoreFactory.create(
+        scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+        produceFile = { context.preferencesDataStoreFile("foldforge_settings") },
+    )
 
-class SettingsRepository(private val context: Context) {
     private object K {
         val onboarding = booleanPreferencesKey("onboarding_done")
         val theme = stringPreferencesKey("theme")
@@ -113,12 +121,12 @@ class SettingsRepository(private val context: Context) {
     private inline fun <reified T : Enum<T>> enumOr(value: String?, default: T): T =
         value?.let { v -> enumValues<T>().firstOrNull { it.name == v } } ?: default
 
-    val settings: Flow<AppSettings> = context.dataStore.data.map { readFrom(it) }
+    val settings: Flow<AppSettings> = dataStore.data.map { readFrom(it) }
 
     suspend fun current(): AppSettings = settings.first()
 
     suspend fun update(transform: (AppSettings) -> AppSettings) {
-        context.dataStore.edit { p ->
+        dataStore.edit { p ->
             val s = transform(readFrom(p))
             p[K.onboarding] = s.onboardingDone
             p[K.theme] = s.theme.name

@@ -1,0 +1,21 @@
+PASS  forge-runner       fold-outer adapter=true webgl=false scenarios=7 PASS 15 FAIL 0 WARN 0
+      console: Failed to load resource: the server responded with a status of 404 (Not Found)
+PASS  forge-runner       fold-inner adapter=true webgl=false scenarios=7 PASS 15 FAIL 0 WARN 0
+PASS  canvas-game        fold-outer adapter=true webgl=false scenarios=7 PASS 13 FAIL 0 WARN 0
+PASS  canvas-game        fold-inner adapter=true webgl=false scenarios=7 PASS 13 FAIL 0 WARN 0
+PASS  platformer         fold-outer adapter=true webgl=false scenarios=7 PASS 14 FAIL 0 WARN 0
+PASS  platformer         fold-inner adapter=true webgl=false scenarios=7 PASS 14 FAIL 0 WARN 0
+PASS  puzzle             fold-outer adapter=true webgl=false scenarios=6 PASS 11 FAIL 0 WARN 0
+PASS  puzzle             fold-inner adapter=true webgl=false scenarios=6 PASS 11 FAIL 0 WARN 0
+PASS  interactive-story  fold-outer adapter=true webgl=false scenarios=6 PASS 11 FAIL 0 WARN 0
+PASS  interactive-story  fold-inner adapter=true webgl=false scenarios=6 PASS 11 FAIL 0 WARN 0
+PASS  mobile-ui          fold-outer adapter=true webgl=false scenarios=5 PASS 8 FAIL 0 WARN 0
+PASS  mobile-ui          fold-inner adapter=true webgl=false scenarios=5 PASS 8 FAIL 0 WARN 0
+PASS  threejs-game       fold-outer adapter=true webgl=true scenarios=6 PASS 11 FAIL 0 WARN 0
+PASS  threejs-game       fold-inner adapter=true webgl=true scenarios=6 PASS 11 FAIL 0 WARN 0
+PASS  rpg3d              fold-outer adapter=true webgl=true scenarios=9 PASS 22 FAIL 0 WARN 0
+PASS  rpg3d              fold-inner adapter=true webgl=true scenarios=9 PASS 22 FAIL 0 WARN 0
+PASS  html-app           fold-outer adapter=false webgl=false scenarios=5 PASS 6 FAIL 0 WARN 1
+PASS  html-app           fold-inner adapter=false webgl=false scenarios=5 PASS 6 FAIL 0 WARN 1
+PASS  blank-web          fold-outer adapter=false webgl=false scenarios=5 PASS 6 FAIL 0 WARN 1
+PASS  blank-web          fold-inner adapter=false webgl=false scenarios=5 PASS 6 FAIL 0 WARN 1

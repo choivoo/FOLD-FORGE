@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.foldforge.studio.core.qa.QaStatus
 import com.foldforge.studio.core.ui.components.EmptyState
 import com.foldforge.studio.core.ui.components.PanelHeader
@@ -41,7 +42,7 @@ import com.foldforge.studio.feature.workspace.WorkspaceViewModel
 @Composable
 fun QaPanel(vm: WorkspaceViewModel, modifier: Modifier = Modifier) {
     val qa = vm.qa
-    val settings = vm.settings.value
+    val settings by vm.settings.collectAsStateWithLifecycle()
     var expanded by remember { mutableStateOf<String?>(null) }
     LaunchedEffect(vm.projectOrNull) { qa.loadState() }
 

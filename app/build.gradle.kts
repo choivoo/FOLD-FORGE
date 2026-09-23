@@ -67,6 +67,11 @@ android {
     sourceSets["main"].assets.srcDir(layout.buildDirectory.dir("generated/playerAssets"))
 }
 
+// UI/Robolectric tests need the debug-only Compose test manifest; run them on the debug variant only.
+androidComponents {
+    beforeVariants(selector().withBuildType("release")) { it.hostTests.values.forEach { t -> t.enable = false } }
+}
+
 kotlin {
     compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
 }

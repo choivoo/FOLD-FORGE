@@ -97,7 +97,7 @@ window.__foldForgeTest = {
   version: 1,
   actions: ['jump', 'left', 'right'],
   getState() {
-    return { scene: s.gameOver ? 'gameover' : 'run', player: { y: Math.round(s.player.y), grounded: s.player.grounded, jumps: s.player.jumps }, score: s.score, obstacles: s.obstacles.length, speed: Math.round(s.speed), gameOver: s.gameOver, loading: false };
+    return { scene: s.gameOver ? 'gameover' : 'run', player: { y: Math.round(s.player.y), grounded: s.player.grounded, jumps: s.player.jumps, speed: Math.round(s.speed) }, score: s.score, obstacles: s.obstacles.length, gameOver: s.gameOver, loading: false };
   },
   pressButton(name, down) { if (name === 'jump' && down) input.jumpQueued = true; if (name === 'left' || name === 'right') input[name] = !!down; },
   restart() { reset(); },
