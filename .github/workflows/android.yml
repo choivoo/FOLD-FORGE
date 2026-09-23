@@ -4,6 +4,11 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Publish a GitHub Release with this tag (e.g. v1.0.0); empty = CI only'
+        required: false
+        default: ''
 
 jobs:
   build:
@@ -48,10 +53,11 @@ jobs:
             */build/reports/
             */build/test-results/
 
-  # Pushing a v* tag publishes the APKs built and tested above as a GitHub Release (pre-release while
-  # the app is a Release Candidate). Runs only after both build and web QA pass.
+  # Pushing a v* tag, or running the workflow with a release_tag input, publishes the APKs built and
+  # tested above as a GitHub Release (pre-release while the app is a Release Candidate). Runs only after
+  # both build and web QA pass; a dispatch creates the tag on the tested commit.
   release:
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.release_tag != '')
     needs: [build, web-qa]
     runs-on: ubuntu-latest
     permissions:
@@ -65,7 +71,9 @@ jobs:
       - name: Create release
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.release_tag || github.ref_name }}
         run: |
+          case "$TAG" in v[0-9]*) ;; *) echo "release tag must look like v1.0.0: $TAG"; exit 1;; esac
           (cd release && sha256sum -c SHA256SUMS)
           {
             cat RELEASE_NOTES_1.0.0.md
@@ -81,8 +89,8 @@ jobs:
             echo
             echo "Install: download \`FoldForge-1.0.0-release-localsigned.apk\` on the phone, open it and allow \"Install unknown apps\"."
           } > notes.md
-          gh release create "$GITHUB_REF_NAME" release/*.apk release/SHA256SUMS \
-            --title "FOLD FORGE 1.0.0 (Release Candidate)" --notes-file notes.md --prerelease --verify-tag
+          gh release create "$TAG" release/*.apk release/SHA256SUMS --target "$GITHUB_SHA" \
+            --title "FOLD FORGE 1.0.0 (Release Candidate)" --notes-file notes.md --prerelease
 
   web-qa:
     runs-on: ubuntu-latest
