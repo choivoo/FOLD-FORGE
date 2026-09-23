@@ -48,6 +48,42 @@ jobs:
             */build/reports/
             */build/test-results/
 
+  # Pushing a v* tag publishes the APKs built and tested above as a GitHub Release (pre-release while
+  # the app is a Release Candidate). Runs only after both build and web QA pass.
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build, web-qa]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: FoldForge-1.0.0-apks
+          path: release
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          (cd release && sha256sum -c SHA256SUMS)
+          {
+            cat RELEASE_NOTES_1.0.0.md
+            echo
+            echo "## Files attached to this release"
+            echo "Built and tested by CI run [${GITHUB_RUN_ID}](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}) from \`${GITHUB_SHA::7}\`; these supersede the local-build sizes above."
+            echo
+            echo "| File | Size | SHA-256 |"
+            echo "|---|---|---|"
+            for f in release/*.apk; do
+              echo "| $(basename "$f") | $(stat -c %s "$f") B | \`$(sha256sum "$f" | cut -d' ' -f1)\` |"
+            done
+            echo
+            echo "Install: download \`FoldForge-1.0.0-release-localsigned.apk\` on the phone, open it and allow \"Install unknown apps\"."
+          } > notes.md
+          gh release create "$GITHUB_REF_NAME" release/*.apk release/SHA256SUMS \
+            --title "FOLD FORGE 1.0.0 (Release Candidate)" --notes-file notes.md --prerelease --verify-tag
+
   web-qa:
     runs-on: ubuntu-latest
     timeout-minutes: 30
