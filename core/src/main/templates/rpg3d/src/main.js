@@ -127,7 +127,8 @@ function update(dt) {
   player.dashTimer = Math.max(0, player.dashTimer - dt);
   player.invuln = Math.max(0, player.invuln - dt);
   if (input.consume('dash') && player.dashCooldown === 0) { player.dashTimer = 0.2; player.dashCooldown = 1; player.invuln = Math.max(player.invuln, 0.25); }
-  if (input.consume('attack')) performAttack();
+  // Keep an attack pressed during the cooldown buffered, so presses aren't lost at low frame rates.
+  if (player.attackCooldown === 0 && input.consume('attack')) performAttack();
 
   const speed = player.speed * (player.dashTimer > 0 ? 3 : 1);
   const pos = player.mesh.position;
@@ -209,9 +210,7 @@ window.__foldForgeTest = {
         steps: [
           { action: 'restart' }, { action: 'wait', ms: 300 }, { action: 'snapshot', as: 'before' },
           { action: 'debug', call: 'spawnEnemyNear' }, { action: 'wait', ms: 200 },
-          { action: 'press', button: 'attack', ms: 80 }, { action: 'wait', ms: 400 },
-          { action: 'press', button: 'attack', ms: 80 }, { action: 'wait', ms: 400 },
-          { action: 'press', button: 'attack', ms: 80 }, { action: 'wait', ms: 400 },
+          { action: 'waitUntil', path: 'kills', op: 'gt', from: 'before', press: 'attack', timeout: 20000 },
           { expect: 'compare', path: 'kills', op: 'gt', from: 'before', name: 'monster defeated' },
           { expect: 'changed', path: 'score', from: 'before', name: 'XP / score awarded' },
           { expect: 'noErrors' },

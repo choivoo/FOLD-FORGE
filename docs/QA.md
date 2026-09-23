@@ -12,6 +12,7 @@ Status values: **PASS**, **FAIL**, **BLOCKED** (could not run in this environmen
 | Android lint | `./gradlew lint` | 0 errors (warnings documented) |
 | Debug + release APK | `./gradlew assembleDebug assembleRelease` | BUILD SUCCESSFUL |
 | Web template QA (Chromium) | `cd tools/webqa && node run-web-qa.mjs` | 20/20 template×viewport runs PASS |
+| Low-FPS stress (template QA) | `FRAME_COST_MS=150 node run-web-qa.mjs`; `FRAME_COST_MS=300 node run-web-qa.mjs rpg3d` / `forge-runner,platformer` | full suite at 150 ms/frame: only rpg3d/platformer/Forge Runner failed before the fix; after it those three PASS at 150 and 300 ms/frame (FPS checks WARN, as expected) |
 | QA mutation check | `MUTATE=1 node run-web-qa.mjs rpg3d` | injected combat bug detected (2 FAIL checks, as intended) |
 | Exported Android project | export → `./gradlew assembleDebug` | real `app-debug.apk`, `aapt2` confirms package |
 
@@ -22,6 +23,9 @@ Zip Slip, `../` and absolute entries, malformed/empty ZIPs, oversized archives a
 App launch → onboarding → Forge Runner demo created → workspace (compact/folded layout, bottom nav) → Preview pane; Settings screen; Room DAOs (projects, sessions, builds); settings persistence and battery-mode derivation; SecureStore refuses plaintext storage without the Keystore; preview helpers; WorkspaceViewModel with a real project (open, auto-pair, auto-indent, debounced autosave to disk, undo, safe delete with restorable snapshot, layout presets); graceful failure for a missing project; New Project dialog (component level).
 
 **Known test-harness limitation:** a full-app UI test that opens a Material dialog over the Home screen never reaches Compose idle under Robolectric. It was investigated: a snapshot-observer probe showed no state churn, so this is not an app recomposition loop. The dialog is covered by component tests, and the create/edit flow by the ViewModel test.
+
+### Frame-rate robustness
+The first CI run failed rpg3d combat at the fold-inner viewport: the GitHub runner's software GL gave a low frame rate, and since game time is capped per frame (`dt`), fixed wall-clock waits were too short and attack presses during the cooldown were dropped. This was reproduced locally with `FRAME_COST_MS` (burns N ms per animation frame; `CPU_THROTTLE` is also available but does not slow GPU rasterization) and fixed by buffering the attack input and replacing fixed waits with `waitUntil` state waits. The same stress run exposed and fixed identical fragility in the platformer and Forge Runner scenarios.
 
 ## Final QA matrix
 

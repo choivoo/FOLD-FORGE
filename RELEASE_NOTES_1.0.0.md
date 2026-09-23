@@ -14,8 +14,8 @@ Galaxy Z Fold or an emulator: the build environment has no hardware virtualizati
 ## Artifacts (built 2026-09-23)
 | File | Size | SHA-256 |
 |---|---|---|
-| FoldForge-1.0.0-debug.apk | 94,020,648 B | see `release/SHA256SUMS` |
-| FoldForge-1.0.0-release-localsigned.apk | 70,481,388 B | see `release/SHA256SUMS` |
+| FoldForge-1.0.0-debug.apk | 94,237,043 B | see `release/SHA256SUMS` |
+| FoldForge-1.0.0-release-localsigned.apk | 70,482,324 B | see `release/SHA256SUMS` |
 
 Both are signed with the Android debug key (v2 signature verified with `apksigner`). CI rebuilds and
 publishes them as the `FoldForge-1.0.0-apks` artifact. CI builds use a different debug key, so their

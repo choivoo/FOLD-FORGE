@@ -15,9 +15,11 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      # Explicit package list: the action's default includes the legacy "tools" package, which current
+      # cmdline-tools no longer provide (sdkmanager exits 1).
       - uses: android-actions/setup-android@v3
-      - name: Install SDK packages
-        run: sdkmanager "platforms;android-36" "build-tools;36.0.0" "platform-tools"
+        with:
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
       - uses: gradle/actions/setup-gradle@v4
       - name: Unit tests (core + app/Robolectric)
         run: ./gradlew test

@@ -379,6 +379,19 @@
           else ctx.checks.push({ name: 'debug:' + step.call, status: 'WARN', message: 'Adapter debug hook "' + step.call + '" not available' });
           return sleep(step.ms || 100);
         }
+        case 'waitUntil': {
+          // Waits on game state instead of wall-clock time, so scenarios hold at any frame rate.
+          // Optional "press" re-presses a button every poll until the condition holds or "timeout" ms pass.
+          var deadline = performance.now() + (step.timeout || 5000);
+          var poll = function () {
+            var cur = getPath(readState().state, step.path);
+            var ref = step.from ? getPath(ctx.vars[step.from], step.refPath || step.path) : step.value;
+            if (compare(step.op || 'eq', cur, ref) || performance.now() >= deadline) return Promise.resolve();
+            return (step.press ? Input.hold(step.press, step.pressMs || 60) : Promise.resolve())
+              .then(function () { return sleep(step.interval || 150); }).then(poll);
+          };
+          return poll();
+        }
         case 'snapshot': ctx.vars[step.as || 'snap'] = readState().state; return Promise.resolve();
         case 'canvasSnapshot': return sampleCanvas().then(function (l) { ctx.vars[step.as || 'canvas'] = l; });
         case 'sampleFps': {

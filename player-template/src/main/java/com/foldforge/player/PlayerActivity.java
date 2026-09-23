@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
@@ -15,6 +16,8 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.window.OnBackInvokedCallback;
+import android.window.OnBackInvokedDispatcher;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +33,9 @@ public class PlayerActivity extends Activity {
     private static final String HOST = "appassets.androidplatform.net";
     private static final String PREFIX = "/www/";
     private WebView webView;
+    /** API 33+: registered only while the WebView has history, so otherwise back exits with the system animation. */
+    private Object backCallback;
+    private boolean backCallbackRegistered;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -75,11 +81,18 @@ public class PlayerActivity extends Activity {
                 }
                 return true;
             }
+
+            @Override
+            public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
+                updateBackCallback();
+            }
         });
         setContentView(webView);
         enterImmersive();
-        if (savedInstanceState != null) webView.restoreState(savedInstanceState);
-        else webView.loadUrl("https://" + HOST + PREFIX + "index.html");
+        if (savedInstanceState != null) {
+            webView.restoreState(savedInstanceState);
+            updateBackCallback();
+        } else webView.loadUrl("https://" + HOST + PREFIX + "index.html");
     }
 
     private static WebResourceResponse notFound() {
@@ -122,10 +135,25 @@ public class PlayerActivity extends Activity {
         webView.saveState(outState);
     }
 
+    // Apps targeting API 36 no longer receive onBackPressed() for back gestures (predictive back),
+    // so history navigation goes through OnBackInvokedDispatcher on API 33+ and the back key below it.
+    private void updateBackCallback() {
+        if (Build.VERSION.SDK_INT < 33) return;
+        boolean want = webView.canGoBack();
+        if (want == backCallbackRegistered) return;
+        if (backCallback == null) backCallback = (OnBackInvokedCallback) () -> webView.goBack();
+        if (want) getOnBackInvokedDispatcher().registerOnBackInvokedCallback(OnBackInvokedDispatcher.PRIORITY_DEFAULT, (OnBackInvokedCallback) backCallback);
+        else getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback((OnBackInvokedCallback) backCallback);
+        backCallbackRegistered = want;
+    }
+
     @Override
-    public void onBackPressed() {
-        if (webView.canGoBack()) webView.goBack();
-        else super.onBackPressed();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && Build.VERSION.SDK_INT < 33 && webView.canGoBack()) {
+            webView.goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

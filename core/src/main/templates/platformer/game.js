@@ -126,11 +126,12 @@ window.__foldForgeTest = {
     return [{
       id: 'platformer-jump', name: 'Jump leaves the ground and lands', category: 'movement',
       steps: [
-        { action: 'restart' }, { action: 'wait', ms: 400 }, { action: 'snapshot', as: 'ground' },
+        { action: 'restart' }, { action: 'waitUntil', path: 'player.grounded', op: 'eq', value: true, timeout: 20000 },
+        { action: 'snapshot', as: 'ground' },
         { expect: 'truthy', path: 'player.grounded', name: 'player starts grounded' },
-        { action: 'press', button: 'jump', ms: 100 }, { action: 'wait', ms: 120 },
+        { action: 'waitUntil', path: 'player.y', op: 'lt', from: 'ground', press: 'jump', pressMs: 200, timeout: 20000 },
         { expect: 'compare', path: 'player.y', op: 'lt', from: 'ground', name: 'player rises when jumping' },
-        { action: 'wait', ms: 900 },
+        { action: 'waitUntil', path: 'player.grounded', op: 'eq', value: true, timeout: 20000 },
         { expect: 'truthy', path: 'player.grounded', name: 'player lands again' },
       ],
     }];

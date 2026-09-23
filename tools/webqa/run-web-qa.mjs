@@ -92,6 +92,18 @@ for (const tpl of TEMPLATES) {
     const consoleErrors = [];
     page.on('console', (m) => { if (m.type() === 'error') consoleErrors.push(m.text()); });
     page.on('pageerror', (e) => consoleErrors.push('pageerror: ' + e.message));
+    // CPU_THROTTLE=N slows the page N× (CDP) to reproduce slow CI runners / low-end devices.
+    if (Number(process.env.CPU_THROTTLE) > 1) {
+      const cdp = await page.context().newCDPSession(page);
+      await cdp.send('Emulation.setCPUThrottlingRate', { rate: Number(process.env.CPU_THROTTLE) });
+    }
+    // FRAME_COST_MS=N burns N ms in every animation frame to emulate a low-FPS GPU (e.g. software GL on CI).
+    if (Number(process.env.FRAME_COST_MS) > 0) {
+      await page.addInitScript((ms) => {
+        const raf = window.requestAnimationFrame.bind(window);
+        window.requestAnimationFrame = (cb) => raf((t) => { const end = performance.now() + ms; while (performance.now() < end); cb(t); });
+      }, Number(process.env.FRAME_COST_MS));
+    }
     await page.goto(`http://127.0.0.1:${port}/project/index.html`, { waitUntil: 'load' });
     await page.waitForTimeout(1200);
     const probe = JSON.parse(await page.evaluate(() => window.__ff.probe()));

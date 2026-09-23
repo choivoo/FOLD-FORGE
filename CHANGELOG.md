@@ -14,3 +14,6 @@ First release.
 - On-device APK builder (template APK + binary manifest rewrite + apksig signing), Android Studio project exporter, web export.
 - Asset manager: GLB/GLTF/OBJ inspection and 3D viewer, image tools, unused-asset scan, procedural 3D generator, optional AI image provider.
 - CI workflow, 68 JVM tests, Chromium template QA.
+- QA engine: `waitUntil` step (waits on game state, optionally re-pressing a button) so scenarios hold at any frame rate; the rpg3d, platformer and Forge Runner scenarios use it.
+- rpg3d: an attack pressed during the cooldown is buffered instead of dropped (lost inputs on slow devices).
+- Player template: back gestures navigate WebView history on Android 13+ (`OnBackInvokedDispatcher`; apps targeting API 36 no longer receive `onBackPressed`).

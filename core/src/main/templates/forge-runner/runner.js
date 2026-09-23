@@ -108,10 +108,12 @@ window.__foldForgeTest = {
       id: 'runner-core', name: 'Runner: score grows and jump works', category: 'gameplay',
       steps: [
         { action: 'restart' }, { action: 'debug', call: 'clearObstacles' }, { action: 'snapshot', as: 'start' },
-        { action: 'wait', ms: 600 }, { expect: 'compare', path: 'score', op: 'gt', from: 'start', name: 'score increases while running' },
-        { action: 'press', button: 'jump', ms: 60 }, { action: 'wait', ms: 120 },
+        { action: 'waitUntil', path: 'score', op: 'gt', from: 'start', timeout: 20000 },
+        { expect: 'compare', path: 'score', op: 'gt', from: 'start', name: 'score increases while running' },
+        { action: 'waitUntil', path: 'player.y', op: 'lt', value: 0, press: 'jump', timeout: 20000 },
         { expect: 'compare', path: 'player.y', op: 'lt', value: 0, name: 'player is airborne after jump' },
-        { action: 'wait', ms: 800 }, { expect: 'truthy', path: 'player.grounded', name: 'player lands' },
+        { action: 'waitUntil', path: 'player.grounded', op: 'eq', value: true, timeout: 20000 },
+        { expect: 'truthy', path: 'player.grounded', name: 'player lands' },
         { expect: 'noErrors' },
       ],
     }];

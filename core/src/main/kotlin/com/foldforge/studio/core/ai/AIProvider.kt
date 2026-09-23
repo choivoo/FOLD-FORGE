@@ -178,6 +178,7 @@ object Prompts {
         {"action":"wait","ms":300} {"action":"press","button":"left|right|up|down|jump|attack|dash|interact|menu","ms":400}
         {"action":"key","key":"ArrowLeft","ms":100} {"action":"tap","x":0.5,"y":0.5} {"action":"drag","x1":0.2,"y1":0.8,"x2":0.4,"y2":0.8,"ms":300}
         {"action":"joystick","x":1,"y":0,"ms":500} {"action":"restart"} {"action":"debug","call":"<adapter debug fn>","args":[]}
+        {"action":"waitUntil","path":"kills","op":"gt","from":"name"|"value":1,"press":"attack","timeout":5000} (waits on state, optionally re-pressing a button; prefer it over fixed waits)
         {"action":"snapshot","as":"name"} {"action":"canvasSnapshot","as":"name"} {"action":"sampleFps","ms":2000,"as":"perf"}
         {"expect":"noErrors"} {"expect":"stateAvailable"} {"expect":"truthy","path":"a.b"} {"expect":"falsy","path":"a.b"}
         {"expect":"changed","path":"player.x","from":"name"} {"expect":"compare","path":"score","op":"gt|gte|lt|lte|eq|neq","from":"name"|"value":1}
