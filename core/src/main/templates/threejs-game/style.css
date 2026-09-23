@@ -1,0 +1,4 @@
+html, body { margin: 0; height: 100%; overflow: hidden; background: #0b0d12; touch-action: none; font-family: system-ui, sans-serif; }
+canvas { display: block; }
+#fps { position: fixed; top: 8px; right: 10px; color: #7CFFB2; font: 600 13px ui-monospace, monospace; }
+#help { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); color: #9aa3b5; font-size: 13px; pointer-events: none; }

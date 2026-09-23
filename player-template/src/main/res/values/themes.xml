@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="player_bg">#FF0F1115</color>
+    <color name="icon_bg">#FF14171F</color>
+    <color name="icon_fg">#FFFF8A3D</color>
+    <style name="PlayerTheme" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/player_bg</item>
+        <item name="android:statusBarColor">@color/player_bg</item>
+        <item name="android:navigationBarColor">@color/player_bg</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+</resources>

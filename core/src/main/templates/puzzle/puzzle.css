@@ -1,0 +1,10 @@
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 16px; background: #121521; color: #eef1f7; font-family: system-ui, sans-serif; }
+header { width: min(92vw, 420px); display: flex; justify-content: space-between; align-items: baseline; }
+h1 { font-size: 20px; margin: 0; }
+#board { width: min(92vw, 420px); aspect-ratio: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.tile { border: 0; border-radius: 10px; background: #2b3350; color: #fff; font-size: clamp(18px, 6vw, 30px); font-weight: 800; min-height: 44px; }
+.tile.empty { background: transparent; }
+.tile.ok { background: #2f6b4f; }
+.btn { min-height: 48px; padding: 0 24px; border: 0; border-radius: 12px; background: #ff8a3d; color: #1a0e05; font-weight: 800; font-size: 16px; }
+.win #board { outline: 3px solid #7cffb2; border-radius: 12px; }

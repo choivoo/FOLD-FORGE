@@ -1,0 +1,2 @@
+{ "id": "rpg3d", "name": "3D RPG Starter", "description": "Playable 3D action RPG: player, monsters, HP, attack, XP, levels, touch controls, HUD and save state.", "type": "threejs", "entry": "index.html", "tags": ["game", "3d", "rpg"], "order": 5,
+  "shared": { "vendor/three.module.min.js": "_shared/vendor/three.module.min.js", "vendor/THREE_LICENSE.txt": "_shared/vendor/THREE_LICENSE.txt" } }

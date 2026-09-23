@@ -1,0 +1,1 @@
+{ "id": "forge-runner", "name": "Forge Runner (Demo)", "description": "First-run demo: endless runner with jump, obstacles, score and touch controls.", "type": "canvas", "entry": "index.html", "tags": ["game", "demo"], "order": 0 }

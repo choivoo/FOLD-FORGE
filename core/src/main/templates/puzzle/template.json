@@ -1,0 +1,1 @@
+{ "id": "puzzle", "name": "Puzzle", "description": "Sliding tile puzzle (DOM, touch + keyboard) with move counter.", "type": "html", "entry": "index.html", "tags": ["game", "puzzle"], "order": 7 }

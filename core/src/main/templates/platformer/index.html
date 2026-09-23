@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>{{PROJECT_NAME}}</title>
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #20305a; touch-action: none; user-select: none; -webkit-user-select: none; }
+    canvas { display: block; width: 100vw; height: 100vh; }
+    .pad { position: fixed; bottom: 18px; display: flex; gap: 12px; }
+    .pad.left { left: 16px; } .pad.right { right: 16px; }
+    .btn { width: 64px; height: 64px; border-radius: 50%; border: 0; background: rgba(255,255,255,0.18); color: #fff; font-size: 26px; }
+    .btn:active { background: rgba(255,138,61,0.6); }
+  </style>
+</head>
+<body>
+  <canvas id="game"></canvas>
+  <div class="pad left">
+    <button class="btn" data-key="left" aria-label="Left">◀</button>
+    <button class="btn" data-key="right" aria-label="Right">▶</button>
+  </div>
+  <div class="pad right"><button class="btn" data-key="jump" aria-label="Jump">⤒</button></div>
+  <script src="game.js"></script>
+</body>
+</html>

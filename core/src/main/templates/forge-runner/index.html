@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>{{PROJECT_NAME}}</title>
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #0c0f16; touch-action: none; user-select: none; -webkit-user-select: none; font-family: system-ui, sans-serif; }
+    canvas { display: block; width: 100vw; height: 100vh; }
+    #score { position: fixed; top: 12px; right: 16px; color: #fff; font: 800 22px ui-monospace, monospace; pointer-events: none; }
+    #hint { position: fixed; bottom: 16px; left: 0; right: 0; text-align: center; color: #8b93a7; font-size: 13px; pointer-events: none; }
+    #jump { position: fixed; right: 18px; bottom: 44px; width: 76px; height: 76px; border-radius: 50%; border: 0; background: rgba(255,138,61,0.8); color: #1a0e05; font-size: 28px; font-weight: 800; }
+  </style>
+</head>
+<body>
+  <canvas id="game"></canvas>
+  <div id="score" data-hud>0</div>
+  <div id="hint">Tap / Space to jump · ←/→ to adjust speed</div>
+  <button id="jump" aria-label="Jump">⤒</button>
+  <script src="runner.js"></script>
+</body>
+</html>

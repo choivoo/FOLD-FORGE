@@ -1,0 +1,7 @@
+body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top, #2a2140, #0e0c14); color: #efe8ff; font-family: Georgia, serif; }
+main { max-width: 640px; margin: 0 auto; padding: 32px 20px; }
+h1 { font-size: 26px; }
+#text { font-size: 19px; line-height: 1.6; min-height: 120px; }
+#choices { display: grid; gap: 10px; margin: 20px 0; }
+.btn { min-height: 48px; padding: 10px 16px; border-radius: 12px; border: 1px solid #5d4b8a; background: #241d38; color: inherit; font-size: 16px; text-align: left; }
+.btn.ghost { background: transparent; border-color: #3a3150; color: #b5a8d8; text-align: center; }

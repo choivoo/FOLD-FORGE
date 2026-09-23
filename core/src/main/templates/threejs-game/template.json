@@ -1,0 +1,2 @@
+{ "id": "threejs-game", "name": "Three.js Game", "description": "Three.js starter: scene, camera, lights, loop, resize, touch and FPS counter.", "type": "threejs", "entry": "index.html", "tags": ["game", "3d"], "order": 4,
+  "shared": { "vendor/three.module.min.js": "_shared/vendor/three.module.min.js", "vendor/THREE_LICENSE.txt": "_shared/vendor/THREE_LICENSE.txt" } }

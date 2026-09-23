@@ -1,0 +1,15 @@
+:root { --bg: #0f1116; --card: #191c24; --text: #eef1f7; --muted: #8b93a7; --accent: #ff8a3d; }
+body.light { --bg: #f5f6fa; --card: #ffffff; --text: #151822; --muted: #5b6275; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; padding-bottom: 76px; }
+.topbar { position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--bg); border-bottom: 1px solid rgba(128,128,128,0.2); }
+.topbar h1 { margin: 0; font-size: 19px; }
+.icon-btn { width: 44px; height: 44px; border: 0; border-radius: 12px; background: var(--card); color: var(--text); font-size: 20px; }
+main { padding: 16px; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.card { background: var(--card); border-radius: 16px; padding: 16px; }
+.card h2 { margin: 0 0 6px; font-size: 16px; }
+.card p { margin: 0; color: var(--muted); font-size: 14px; }
+.bottom-nav { position: fixed; left: 0; right: 0; bottom: 0; display: flex; background: var(--card); border-top: 1px solid rgba(128,128,128,0.2); padding-bottom: env(safe-area-inset-bottom); }
+.tab { flex: 1; min-height: 60px; border: 0; background: none; color: var(--muted); font-size: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+.tab span { font-size: 11px; }
+.tab.active { color: var(--accent); }

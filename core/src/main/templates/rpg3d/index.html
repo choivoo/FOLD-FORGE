@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>{{PROJECT_NAME}}</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+</head>
+<body>
+  <div id="hud" data-hud>
+    <div class="bar"><div id="hp-fill"></div><span id="hp-text">HP</span></div>
+    <div class="bar xp"><div id="xp-fill"></div><span id="xp-text">Lv 1</span></div>
+  </div>
+  <div id="stats" data-hud></div>
+  <button id="menu-btn" class="btn" aria-label="Menu">☰</button>
+  <div id="joystick" class="control" aria-label="Move"><div id="knob"></div></div>
+  <div id="actions">
+    <button id="dash-btn" class="btn action" aria-label="Dash">⇢</button>
+    <button id="attack-btn" class="btn action big" aria-label="Attack">⚔</button>
+  </div>
+  <div id="menu" class="overlay hidden">
+    <div class="panel">
+      <h2>Paused</h2>
+      <button id="resume-btn" class="btn wide">Resume</button>
+      <button id="reset-btn" class="btn wide">New Game</button>
+    </div>
+  </div>
+  <div id="gameover" class="overlay hidden">
+    <div class="panel"><h2>You fell…</h2><button id="retry-btn" class="btn wide">Retry</button></div>
+  </div>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

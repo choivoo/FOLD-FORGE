@@ -1,0 +1,1 @@
+{ "id": "blank-web", "name": "Blank Web", "description": "Empty HTML/CSS/JS project.", "type": "web", "entry": "index.html", "tags": ["web"], "order": 1 }

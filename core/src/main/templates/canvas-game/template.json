@@ -1,0 +1,1 @@
+{ "id": "canvas-game", "name": "Canvas Game", "description": "2D top-down arcade game with touch joystick and QA adapter.", "type": "canvas", "entry": "index.html", "tags": ["game", "2d"], "order": 3 }

@@ -1,0 +1,1 @@
+{ "id": "platformer", "name": "Platformer", "description": "Side-scrolling platformer with physics, coins, goal and touch buttons.", "type": "canvas", "entry": "index.html", "tags": ["game", "2d"], "order": 6 }

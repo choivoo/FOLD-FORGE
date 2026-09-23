@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>FOLD FORGE 3D Viewer</title>
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #0e1015; color: #e6e9f0; font: 12px system-ui, sans-serif; touch-action: none; }
+    #bar { position: fixed; left: 6px; right: 6px; bottom: 6px; display: flex; gap: 6px; flex-wrap: wrap; }
+    button, select { min-height: 36px; border: 0; border-radius: 8px; background: #1b1f29; color: #e6e9f0; padding: 0 10px; }
+    #info { position: fixed; top: 6px; left: 8px; color: #8b93a7; }
+  </style>
+</head>
+<body>
+  <div id="info">Loading…</div>
+  <div id="bar">
+    <button id="reset">Reset</button>
+    <button id="wire">Wireframe</button>
+    <select id="anims"><option value="">No animations</option></select>
+  </div>
+  <script type="module">
+    import * as THREE from './three-viewer.module.min.js';
+    import { GLTFLoader, OBJLoader, OrbitControls } from './three-viewer.module.min.js';
+
+    const info = document.getElementById('info');
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(2, devicePixelRatio));
+    renderer.setSize(innerWidth, innerHeight);
+    document.body.prepend(renderer.domElement);
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0e1015);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x333344, 1.2));
+    const dir = new THREE.DirectionalLight(0xffffff, 1.4); dir.position.set(3, 5, 4); scene.add(dir);
+    scene.add(new THREE.GridHelper(10, 20, 0x334055, 0x222a38));
+    const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.01, 1000);
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    let root = null, mixer = null, clips = [], home = null, wire = false;
+    const clock = new THREE.Clock();
+
+    function frame(obj) {
+      const box = new THREE.Box3().setFromObject(obj);
+      const size = box.getSize(new THREE.Vector3()).length() || 1;
+      const center = box.getCenter(new THREE.Vector3());
+      camera.position.copy(center).add(new THREE.Vector3(size * 0.6, size * 0.45, size * 0.8));
+      camera.near = size / 100; camera.far = size * 100; camera.updateProjectionMatrix();
+      controls.target.copy(center); controls.update();
+      home = { pos: camera.position.clone(), target: center.clone() };
+    }
+
+    const model = new URLSearchParams(location.search).get('model') || '';
+    const url = '../model/' + encodeURI(model);
+    const done = (obj, animations) => {
+      root = obj; scene.add(obj); frame(obj);
+      let tris = 0; obj.traverse(o => { if (o.isMesh) { const g = o.geometry; tris += g.index ? g.index.count / 3 : g.attributes.position.count / 3; } });
+      info.textContent = model + ' · ' + Math.round(tris) + ' triangles';
+      clips = animations || [];
+      const sel = document.getElementById('anims');
+      if (clips.length) {
+        sel.innerHTML = '<option value="">Animations (' + clips.length + ')</option>' + clips.map((c, i) => '<option value="' + i + '">' + (c.name || 'Clip ' + i) + '</option>').join('');
+        mixer = new THREE.AnimationMixer(obj);
+      }
+    };
+    const fail = (e) => { info.textContent = 'Failed to load: ' + (e && e.message ? e.message : e); console.error(e); };
+    if (model.toLowerCase().endsWith('.obj')) new OBJLoader().load(url, (o) => done(o, []), undefined, fail);
+    else new GLTFLoader().load(url, (g) => done(g.scene, g.animations), undefined, fail);
+
+    document.getElementById('reset').onclick = () => { if (home) { camera.position.copy(home.pos); controls.target.copy(home.target); controls.update(); } };
+    document.getElementById('wire').onclick = () => {
+      wire = !wire;
+      root && root.traverse(o => { if (o.isMesh) [].concat(o.material).forEach(m => { m.wireframe = wire; }); });
+    };
+    document.getElementById('anims').onchange = (e) => {
+      if (!mixer) return;
+      mixer.stopAllAction();
+      const i = e.target.value;
+      if (i !== '') mixer.clipAction(clips[+i]).play();
+    };
+    addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+    (function loop() { requestAnimationFrame(loop); const dt = clock.getDelta(); mixer && mixer.update(dt); controls.update(); renderer.render(scene, camera); })();
+  </script>
+</body>
+</html>

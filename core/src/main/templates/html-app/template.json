@@ -1,0 +1,1 @@
+{ "id": "html-app", "name": "HTML App", "description": "Responsive notes app with local storage.", "type": "html", "entry": "index.html", "tags": ["app"], "order": 2 }

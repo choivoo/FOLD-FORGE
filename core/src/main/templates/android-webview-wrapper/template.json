@@ -1,0 +1,1 @@
+{ "id": "android-webview-wrapper", "name": "Android WebView Wrapper", "description": "Android Studio (Gradle/Kotlin) project that packages web content in a secure WebView.", "type": "android", "entry": "app/src/main/assets/www/index.html", "tags": ["android"], "order": 10, "generator": "android-wrapper" }

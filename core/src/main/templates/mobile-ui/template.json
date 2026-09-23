@@ -1,0 +1,1 @@
+{ "id": "mobile-ui", "name": "Mobile UI", "description": "Mobile app shell: top bar, cards, tabs and bottom navigation.", "type": "html", "entry": "index.html", "tags": ["app", "ui"], "order": 9 }

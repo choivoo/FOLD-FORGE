@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>{{PROJECT_NAME}}</title>
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #0d1017; touch-action: none; }
+    canvas { display: block; width: 100vw; height: 100vh; }
+    #hud { position: fixed; top: 10px; left: 12px; color: #e8eaf0; font: 600 16px system-ui, sans-serif; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <canvas id="game"></canvas>
+  <div id="hud" data-hud></div>
+  <script src="game.js"></script>
+</body>
+</html>

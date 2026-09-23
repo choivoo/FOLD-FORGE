@@ -1,0 +1,11 @@
+{
+  "start": "gate",
+  "nodes": {
+    "gate": { "text": "Rain hammers the old observatory gate. A brass key glints in the mud, and a light flickers in the tower above.", "choices": [ { "label": "Take the key", "to": "key", "set": "hasKey" }, { "label": "Call out to the tower", "to": "call" } ] },
+    "key": { "text": "The key is warm, as if someone just held it. The gate's lock clicks open on its own.", "choices": [ { "label": "Climb the tower", "to": "tower" } ] },
+    "call": { "text": "A voice answers: 'Only those who carry the key may enter.' The light goes out.", "choices": [ { "label": "Search the mud", "to": "key", "set": "hasKey" }, { "label": "Walk away", "to": "leave" } ] },
+    "tower": { "text": "At the top, a telescope points at a star that should not exist. A note reads: 'Turn the key to begin.'", "choices": [ { "label": "Turn the key", "to": "ending", "requires": "hasKey" }, { "label": "Leave the note", "to": "leave" } ] },
+    "ending": { "text": "The star blooms into a doorway of light. You step through. THE END.", "choices": [] },
+    "leave": { "text": "You walk home through the rain, wondering. THE END.", "choices": [] }
+  }
+}

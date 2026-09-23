@@ -1,0 +1,1 @@
+{ "id": "interactive-story", "name": "Interactive Story", "description": "Branching story engine driven by story.json.", "type": "html", "entry": "index.html", "tags": ["story"], "order": 8 }
